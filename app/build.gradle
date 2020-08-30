@@ -6,12 +6,19 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+
     defaultConfig {
         applicationId "com.example.cryptotradingapp"
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true  //used for multidex error
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -30,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def lifecycle_version = "2.2.0"
     def room_version = "2.2.5"
     def retrofit_version = "2.9.0"
@@ -42,6 +50,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    //for error:Cannot fit requested classes in a single dex file (# methods: 67764 > 65536)
+    implementation 'androidx.multidex:multidex:2.0.1'
 
     //Lifecycle//
     // ViewModel
