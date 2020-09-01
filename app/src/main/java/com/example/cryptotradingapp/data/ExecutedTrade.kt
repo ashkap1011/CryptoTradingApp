@@ -3,7 +3,7 @@ package com.example.cryptotradingapp.data
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "executed_trades_table")
 data class ExecutedTrade (
 
     @PrimaryKey(autoGenerate = true)
@@ -14,5 +14,7 @@ data class ExecutedTrade (
     val isBuy: Boolean,
     val isLimit: Boolean
     //create created at
+
+
 
 )
