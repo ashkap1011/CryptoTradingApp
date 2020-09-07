@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import com.example.cryptotradingapp.R
+import com.example.cryptotradingapp.databinding.FragmentTradingBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,6 +20,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class TradingFragment : Fragment() {
+
+    private lateinit var binding: FragmentTradingBinding
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -35,7 +40,11 @@ class TradingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_trading, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_trading, container, false
+        )
+
+        return binding.root
     }
 
     companion object {

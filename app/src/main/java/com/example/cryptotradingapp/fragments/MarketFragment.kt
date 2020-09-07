@@ -5,7 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.example.cryptotradingapp.R
+import com.example.cryptotradingapp.databinding.FragmentMarketBinding
+import com.example.cryptotradingapp.viewmodels.MarketViewModel
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,6 +22,10 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class MarketFragment : Fragment() {
+
+    private lateinit var binding: FragmentMarketBinding
+    private lateinit var viewModel: MarketViewModel
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -35,8 +43,11 @@ class MarketFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_market, container, false)
-    }
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_market, container, false
+        )
+        viewModel = ViewModelProvider(this).get(MarketViewModel::class.java)
+        return binding.root    }
 
     companion object {
         /**

@@ -1,11 +1,10 @@
-package com.example.cryptotradingapp.data
+package com.example.cryptotradingapp.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "executed_trades_table")
-data class ExecutedTrade (
-
+@Entity(tableName = "open_trades_table")
+data class OpenTrade (
     @PrimaryKey(autoGenerate = true)
     val id: Long,
 
@@ -13,8 +12,4 @@ data class ExecutedTrade (
     val quantity: Int,
     val isBuy: Boolean,
     val isLimit: Boolean
-    //create created at
-
-
-
 )
