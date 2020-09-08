@@ -1,11 +1,13 @@
 package com.example.cryptotradingapp.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.cryptotradingapp.R
@@ -55,7 +57,7 @@ class AccountFragment : Fragment() {
         // Inflate the layout for this fragment
         //TODO maybe start an intent here starts an activity for login.Then use shared preferences.
 
-        getData()
+        //getData()
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_account, container, false
         )
@@ -82,6 +84,22 @@ class AccountFragment : Fragment() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val logoutButton: Button = view.findViewById(R.id.logoutBtn)
+
+        var sp = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        var spEditor = sp?.edit()
+
+        logoutButton.setOnClickListener{
+            spEditor.putBoolean(getString(R.string.prefKeyLogin), false)
+            spEditor.remove(getString(R.string.prefKeyUsername))
+            spEditor.remove(getString(R.string.prefKeyPassword))
+            spEditor.commit()
+        }
+
+    }
 
     companion object {
         /**

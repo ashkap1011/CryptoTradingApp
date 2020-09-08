@@ -1,13 +1,11 @@
 package com.example.cryptotradingapp
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
+import android.util.Log
 import androidx.fragment.app.Fragment
-import com.example.cryptotradingapp.fragments.AccountFragment
-import com.example.cryptotradingapp.fragments.HomeFragment
-import com.example.cryptotradingapp.fragments.MarketFragment
-import com.example.cryptotradingapp.fragments.TradingFragment
+import com.example.cryptotradingapp.fragments.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +18,6 @@ class MainActivity : AppCompatActivity() {
         val homeFragment = HomeFragment()
         val marketFragment = MarketFragment()
         val tradingFragment = TradingFragment()
-        val accountFragment = AccountFragment()
 
         makeCurrentFragment(homeFragment)
 
@@ -29,7 +26,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.ic_home -> makeCurrentFragment(homeFragment)
                 R.id.ic_market -> makeCurrentFragment(marketFragment)
                 R.id.ic_trading -> makeCurrentFragment(tradingFragment)
-                R.id.ic_account -> makeCurrentFragment(accountFragment)
+                R.id.ic_account ->  isLoggedIn()
             }
 
             true
@@ -46,6 +43,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun isLoggedIn(){
+        var isLoggedIn = false
+        val userAccountFragment = AccountFragment()
+        val loginFragment = LoginFragment()
+
+        val sharedPref = this.getPreferences(Context.MODE_PRIVATE)
+        if (sharedPref.contains(getString(R.string.prefKeyLogin))){
+            Log.i("pref", "contains key")
+            isLoggedIn = sharedPref.getBoolean(getString(R.string.prefKeyLogin),false)
+        }
+
+        if(isLoggedIn){
+            makeCurrentFragment(userAccountFragment)
+        } else{
+            makeCurrentFragment(loginFragment)
+        }
+
+
+    }
 
 
 
