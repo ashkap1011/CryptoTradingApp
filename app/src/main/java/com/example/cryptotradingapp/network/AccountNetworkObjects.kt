@@ -14,6 +14,11 @@ data class CryptoCurrency(
 
 class Wallet : ArrayList<CryptoCurrency>()
 
+data class ResponseMessage(
+    val isSuccessful: Boolean,
+    val message: String,
+)
+
 
 
 /**
