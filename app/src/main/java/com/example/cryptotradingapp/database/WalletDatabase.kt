@@ -31,9 +31,5 @@ abstract class WalletDatabase : RoomDatabase(){
                 return instance
             }
         }
-
     }
-
-
-
 }

@@ -1,32 +1,16 @@
 package com.example.cryptotradingapp.fragments
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import androidx.appcompat.widget.SwitchCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.cryptotradingapp.R
 import com.example.cryptotradingapp.databinding.FragmentLoginBinding
-import com.example.cryptotradingapp.network.AccountService
-import com.example.cryptotradingapp.network.ResponseMessage
-import com.example.cryptotradingapp.network.RetrofitInstance
 import com.example.cryptotradingapp.viewmodels.LoginViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import retrofit2.Response
-
-import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -84,10 +68,11 @@ class LoginFragment : Fragment() {
         binding.saveButton.setOnClickListener(){
             viewModel.isSignIn = binding.signupOrSignin.isChecked
             val isSuccessful = viewModel.postCredentials()
+            Log.i("LOGIN", "isSuccessful string: "+ isSuccessful.toString())
             if(isSuccessful){
                 activity!!.supportFragmentManager.beginTransaction().apply{
                     replace(R.id.fl_wrapper, AccountFragment())
-                    addToBackStack(null);
+                    addToBackStack(null)
                     commit()
                 }
             }

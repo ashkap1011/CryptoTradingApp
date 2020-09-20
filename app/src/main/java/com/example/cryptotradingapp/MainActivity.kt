@@ -48,12 +48,12 @@ class MainActivity : AppCompatActivity() {
         val userAccountFragment = AccountFragment()
         val loginFragment = LoginFragment()
 
-        val sharedPref = this.getPreferences(Context.MODE_PRIVATE)
-        if (sharedPref.contains(getString(R.string.prefKeyLogin))){
+        val sharedPref = this.getSharedPreferences(getString(R.string.user_session),Context.MODE_PRIVATE)
+        if (sharedPref.contains(getString(R.string.pref_key_login))){
             Log.i("pref", "contains key")
-            isLoggedIn = sharedPref.getBoolean(getString(R.string.prefKeyLogin),false)
+            isLoggedIn = sharedPref.getBoolean(getString(R.string.pref_key_login),false)
         }
-
+        Log.i("pref", isLoggedIn.toString())
         if(isLoggedIn){
             makeCurrentFragment(userAccountFragment)
         } else{

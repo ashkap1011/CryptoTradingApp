@@ -12,7 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.cryptotradingapp.R
 import com.example.cryptotradingapp.databinding.FragmentAccountBinding
-import com.example.cryptotradingapp.network.AccountService
+import com.example.cryptotradingapp.network.UserService
 import com.example.cryptotradingapp.network.RetrofitInstance
 
 import com.example.cryptotradingapp.viewmodels.AccountViewModel
@@ -34,7 +34,7 @@ class AccountFragment : Fragment() {
 
     private lateinit var binding : FragmentAccountBinding
     private lateinit var viewModel: AccountViewModel
-    private val accountService = RetrofitInstance.getRetrofitInstance().create(AccountService::class.java)
+    private val accountService = RetrofitInstance.getRetrofitInstance().create(UserService::class.java)
 
 
     // TODO: Rename and change types of parameters
@@ -62,7 +62,7 @@ class AccountFragment : Fragment() {
             inflater, R.layout.fragment_account, container, false
         )
 
-        viewModel = ViewModelProvider(this).get(AccountViewModel::class.java)
+        viewModel = ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory(activity!!.application)).get(AccountViewModel::class.java)
 
         return binding.root
     }
@@ -89,13 +89,13 @@ class AccountFragment : Fragment() {
 
         val logoutButton: Button = view.findViewById(R.id.logoutBtn)
 
-        var sp = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        var sp = activity?.getSharedPreferences(getString(R.string.user_session),Context.MODE_PRIVATE) ?: return
         var spEditor = sp?.edit()
 
         logoutButton.setOnClickListener{
-            spEditor.putBoolean(getString(R.string.prefKeyLogin), false)
-            spEditor.remove(getString(R.string.prefKeyUsername))
-            spEditor.remove(getString(R.string.prefKeyPassword))
+            spEditor.putBoolean(getString(R.string.pref_key_login), false)
+            spEditor.remove(getString(R.string.pref_key_username))
+            spEditor.remove(getString(R.string.pref_key_password))
             spEditor.commit()
         }
 
