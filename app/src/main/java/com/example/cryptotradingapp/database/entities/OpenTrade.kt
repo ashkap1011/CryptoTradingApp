@@ -1,4 +1,4 @@
-package com.example.cryptotradingapp.database
+package com.example.cryptotradingapp.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

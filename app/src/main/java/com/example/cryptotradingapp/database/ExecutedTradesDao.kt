@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.cryptotradingapp.database.entities.ExecutedTrade
 
 @Dao
 interface ExecutedTradesDao {
@@ -16,7 +17,7 @@ interface ExecutedTradesDao {
     suspend fun deleteExecutedTrade(trade: ExecutedTrade)
 
     @Query("SELECT * FROM executed_trades_table WHERE id = :key")
-    suspend fun getExecutedTrade(key:Long):ExecutedTrade
+    suspend fun getExecutedTrade(key:Long): ExecutedTrade
 
     @Query("SELECT * FROM executed_trades_table  ORDER BY id DESC")
     fun getAllExecutedTrades(): LiveData<List<ExecutedTrade>>

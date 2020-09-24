@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.cryptotradingapp.database.entities.ExecutedTrade
 
 @Database(entities = [ExecutedTrade::class], version = 1, exportSchema = false)
 abstract class ExecutedTradesDatabase :RoomDatabase(){
@@ -13,7 +14,7 @@ abstract class ExecutedTradesDatabase :RoomDatabase(){
         @Volatile
         private var INSTANCE: ExecutedTradesDatabase? = null
 
-        fun getInstance(context: Context):ExecutedTradesDatabase{
+        fun getInstanceExecTradesDB(context: Context):ExecutedTradesDatabase{
             synchronized(this){
                 var instance = INSTANCE
 

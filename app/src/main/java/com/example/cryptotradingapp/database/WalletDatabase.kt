@@ -4,17 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.cryptotradingapp.database.entities.WalletItemDB
 
-@Database(entities = [CryptoCurrency::class], version = 1, exportSchema = false)
+@Database(entities = [WalletItemDB::class], version = 1, exportSchema = false)
 abstract class WalletDatabase : RoomDatabase(){
-
-    abstract val walletDatabaseDao: CryptoCurrencyDao
+    abstract val walletDao: WalletDao
 
     companion object {
         @Volatile
         private var INSTANCE: WalletDatabase? = null
 
-        fun getInstance(context: Context):WalletDatabase{
+        fun getInstanceWalletDB(context: Context):WalletDatabase{
             synchronized(this){
                 var instance = INSTANCE
 

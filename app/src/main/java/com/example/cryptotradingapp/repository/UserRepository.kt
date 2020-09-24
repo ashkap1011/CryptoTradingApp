@@ -1,9 +1,23 @@
 package com.example.cryptotradingapp.repository
 
+import android.app.Application
+import android.content.Context
+import android.util.Base64
 import android.util.Log
-import com.example.cryptotradingapp.database.WalletDatabase
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import com.example.cryptotradingapp.R
+import com.example.cryptotradingapp.database.*
+import com.example.cryptotradingapp.database.ExecutedTradesDatabase.Companion.getInstanceExecTradesDB
+import com.example.cryptotradingapp.database.OpenTradesDatabase.Companion.getInstanceOpenTradesDB
+import com.example.cryptotradingapp.database.WalletDatabase.Companion.getInstanceWalletDB
+import com.example.cryptotradingapp.database.entities.WalletItemDB
+import com.example.cryptotradingapp.database.entities.asDomainModel
+import com.example.cryptotradingapp.domain.Cryptocurrency
+import com.example.cryptotradingapp.network.ResponseMessage
 import com.example.cryptotradingapp.network.UserService
 import com.example.cryptotradingapp.network.RetrofitInstance
+import com.example.cryptotradingapp.network.asDatabaseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -12,17 +26,114 @@ import kotlinx.coroutines.withContext
  * Repository for User Account
  * Repository for fetching data from network and caching onto disk
  * */
-class UserRepository(private val walletDatabase: WalletDatabase) {
+class UserRepository(app:Application) {
+
     private val userService = RetrofitInstance.getRetrofitInstance().create(UserService::class.java)
+    private val walletDao = getInstanceWalletDB(app).walletDao
+    private val executedTradesDao = getInstanceExecTradesDB(app).executedTradesDao
+    private val openTradesDao = getInstanceOpenTradesDB(app).openTradesDao
+
+    val wallet: LiveData<List<Cryptocurrency>> = Transformations.map(walletDao.getAllWalletItems()) {
+        it.asDomainModel()
+    }
 
 
 
 
-   suspend fun getWallet(){
+    private val application = app
+    private val resources = app.resources
+
+
+    //login here
+    suspend fun verifyLoginCredentials(authHeader: String):ResponseMessage{
+       return userService.postLoginCredentials(authHeader)
+        //if successful login then retrieve all user account info
+    }
+
+    suspend fun postSignUpCredentials(authHeader: String):ResponseMessage{
+        return userService.postSignUpCredentials(authHeader)
+    }
+
+
+
+    fun updateUserSession(username:String,password:String){
+        var sp = application.getSharedPreferences(
+            resources.getString(R.string.user_session),
+            Context.MODE_PRIVATE
+        )
+        var spEditor = sp.edit()
+
+        spEditor.putBoolean(resources.getString(R.string.pref_key_login), true)
+        spEditor.putString(resources.getString(R.string.pref_key_username), username)
+        spEditor.putString(resources.getString(R.string.pref_key_password), password)
+        spEditor.commit()
+    }
+
+
+    suspend fun retrieveUserData(){
+        val authHeader = getUserAuthHeader()
+
+        refreshWallet(authHeader)
+        //send query to get wallet
+        //then cache it in the db
+
+
+
+
+        //now u cache all these values, then work on recycler view by then it will be 4
+        //get wallet, open trades, get executed trades
+
+    }
+    /*
+    suspend fun refreshVideos() {
+        withContext(Dispatchers.IO) {
+            Timber.d("refresh videos is called");
+            val playlist = DevByteNetwork.devbytes.getPlaylist()
+            database.videoDao.insertAll(playlist.asDatabaseModel())
+        }
+    }#
+
+     */
+
+    //todo then work on saving fetched data.
+
+    //todo then work on integrating data in to view using recycler view fragment
+
+    //fetch wallet from remote server
+   suspend fun refreshWallet(authHeader: String){
+       withContext(Dispatchers.IO) {
+           val wallet = userService.getWallet(authHeader)
+           Log.i("Wallet", "Luck, wallet retrieved")
+           walletDao.insertAllWalletItem(wallet.asDatabaseModel())
+           Log.i("Wallet", "Luck, databasemodel retrieved")
+
+       }
+   }
+
+    private fun getUserAuthHeader(): String{
+        val sharedPref = application.getSharedPreferences(resources.getString(R.string.user_session),Context.MODE_PRIVATE)
+        if (sharedPref.contains(resources.getString(R.string.pref_key_login)) && sharedPref.getBoolean(resources.getString(R.string.pref_key_login),false)){
+            val username:String? = sharedPref.getString(resources.getString(R.string.pref_key_username), "")
+            val password: String? = sharedPref.getString(resources.getString(R.string.pref_key_password), "")
+            val credentialsString = username + ":" + password
+            return "Basic " + Base64.encodeToString(
+                credentialsString.toByteArray(),
+                Base64.NO_WRAP
+            )
+        }
+        return ""
+    }
+
+
+
+    /*
+    *  suspend fun refreshWallet(){
        withContext(Dispatchers.IO) {
            val wallet = userService.getWallet()
            val currencyListWallet = wallet.body()?.listIterator()
            if(currencyListWallet != null) {
+
+
                while (currencyListWallet.hasNext()) {
                    val currency = currencyListWallet.next()
                     Log.i("MYMY",currency.symbol)
@@ -30,6 +141,10 @@ class UserRepository(private val walletDatabase: WalletDatabase) {
            }
        }
    }
+    *
+    * */
+
+
 
 
 

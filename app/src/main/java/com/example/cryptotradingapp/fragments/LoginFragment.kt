@@ -64,7 +64,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.saveButton.setOnClickListener(){
             viewModel.isSignIn = binding.signupOrSignin.isChecked
             val isSuccessful = viewModel.postCredentials()

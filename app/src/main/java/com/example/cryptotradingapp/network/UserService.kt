@@ -30,7 +30,7 @@ interface UserService {
      * User's get trades and wallet
      * */
     @GET("/user/wallet")
-    suspend fun getWallet(): Response<Wallet>
+    suspend fun getWallet(@Header("Authorization") authHeader:String): NetworkWallet
     //give it authentication with session wherever it is called from
 
 

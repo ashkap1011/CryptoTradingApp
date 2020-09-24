@@ -10,10 +10,12 @@ import androidx.room.PrimaryKey
 
 //CryptoCurrency in user's wallet
 
-data class CryptoCurrency(
-    val id: Long, //maybe don't need id
+data class Cryptocurrency(
+    val id: String, //maybe don't need id
     val symbol: String,
-    val quantity: Double
+    val quantity: Double,
+    val lockedQuantity:Double
+
 )
 
 //Executed Trade, i.e. trades from order history
