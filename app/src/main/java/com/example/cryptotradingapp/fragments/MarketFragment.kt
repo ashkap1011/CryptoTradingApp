@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.cryptotradingapp.R
 import com.example.cryptotradingapp.databinding.FragmentMarketBinding
+import com.example.cryptotradingapp.viewmodels.LoginViewModel
 import com.example.cryptotradingapp.viewmodels.MarketViewModel
 import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.IO
@@ -37,7 +38,6 @@ class MarketFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private var mSocket: Socket = IO.socket("http://10.0.2.2:3000")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,29 +46,9 @@ class MarketFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
-        mSocket.on("someevent", onNewMessage);
-
-        mSocket.connect()
-        Log.i("message", "heyy")
-
-
     }
 
-    private val onNewMessage = Emitter.Listener { args ->
-        activity!!.runOnUiThread(Runnable {
-            val data = args[0] as JSONObject
-            Log.i("message", data.toString())
-            try {
 
-            } catch (e: JSONException) {
-                return@Runnable
-            }
-            Log.i("message", "heyry")
-            //Log.i("message", username + message)
-            // add the message to view
-            //addMessage(username, message)
-        })
-    }
 
 
 
@@ -79,14 +59,19 @@ class MarketFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-
-
-
-
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_market, container, false
         )
-        viewModel = ViewModelProvider(this).get(MarketViewModel::class.java)
+
+        viewModel = ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory(activity!!.application)).get(
+            MarketViewModel::class.java)
+
+        binding.lifecycleOwner = this
+
+        binding.viewModel = viewModel
+
+        viewModel.startConnection()
+
         return binding.root    }
 
     companion object {

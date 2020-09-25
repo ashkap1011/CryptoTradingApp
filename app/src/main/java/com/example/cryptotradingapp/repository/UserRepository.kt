@@ -7,16 +7,16 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.example.cryptotradingapp.R
-import com.example.cryptotradingapp.database.*
 import com.example.cryptotradingapp.database.ExecutedTradesDatabase.Companion.getInstanceExecTradesDB
 import com.example.cryptotradingapp.database.OpenTradesDatabase.Companion.getInstanceOpenTradesDB
 import com.example.cryptotradingapp.database.WalletDatabase.Companion.getInstanceWalletDB
-import com.example.cryptotradingapp.database.entities.WalletItemDB
 import com.example.cryptotradingapp.database.entities.asDomainModel
 import com.example.cryptotradingapp.domain.Cryptocurrency
+import com.example.cryptotradingapp.fragments.AccountFragment
+import com.example.cryptotradingapp.fragments.LoginFragment
 import com.example.cryptotradingapp.network.ResponseMessage
-import com.example.cryptotradingapp.network.UserService
 import com.example.cryptotradingapp.network.RetrofitInstance
+import com.example.cryptotradingapp.network.UserService
 import com.example.cryptotradingapp.network.asDatabaseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -26,23 +26,20 @@ import kotlinx.coroutines.withContext
  * Repository for User Account
  * Repository for fetching data from network and caching onto disk
  * */
-class UserRepository(app:Application) {
+class UserRepository(app: Application) {    //TODO use depenedcy injection
 
     private val userService = RetrofitInstance.getRetrofitInstance().create(UserService::class.java)
     private val walletDao = getInstanceWalletDB(app).walletDao
     private val executedTradesDao = getInstanceExecTradesDB(app).executedTradesDao
     private val openTradesDao = getInstanceOpenTradesDB(app).openTradesDao
 
+
     val wallet: LiveData<List<Cryptocurrency>> = Transformations.map(walletDao.getAllWalletItems()) {
         it.asDomainModel()
     }
 
-
-
-
     private val application = app
     private val resources = app.resources
-
 
     //login here
     suspend fun verifyLoginCredentials(authHeader: String):ResponseMessage{
@@ -54,9 +51,7 @@ class UserRepository(app:Application) {
         return userService.postSignUpCredentials(authHeader)
     }
 
-
-
-    fun updateUserSession(username:String,password:String){
+    fun updateUserSession(username: String, password: String){
         var sp = application.getSharedPreferences(
             resources.getString(R.string.user_session),
             Context.MODE_PRIVATE
@@ -76,14 +71,28 @@ class UserRepository(app:Application) {
         refreshWallet(authHeader)
         //send query to get wallet
         //then cache it in the db
-
-
-
-
         //now u cache all these values, then work on recycler view by then it will be 4
         //get wallet, open trades, get executed trades
-
     }
+
+    fun isUserLoggedIn():Boolean{
+        var isLoggedIn = false
+
+        val sharedPref = application.getSharedPreferences(resources.getString(R.string.user_session),Context.MODE_PRIVATE)
+        if (sharedPref.contains(resources.getString(R.string.pref_key_login))){
+            isLoggedIn = sharedPref.getBoolean(resources.getString(R.string.pref_key_login),false)
+        }
+        Log.i("pref", isLoggedIn.toString())
+        if(isLoggedIn) {
+            return true
+        }
+        return false
+
+        }
+
+
+
+
     /*
     suspend fun refreshVideos() {
         withContext(Dispatchers.IO) {
@@ -110,11 +119,24 @@ class UserRepository(app:Application) {
        }
    }
 
-    private fun getUserAuthHeader(): String{
-        val sharedPref = application.getSharedPreferences(resources.getString(R.string.user_session),Context.MODE_PRIVATE)
-        if (sharedPref.contains(resources.getString(R.string.pref_key_login)) && sharedPref.getBoolean(resources.getString(R.string.pref_key_login),false)){
-            val username:String? = sharedPref.getString(resources.getString(R.string.pref_key_username), "")
-            val password: String? = sharedPref.getString(resources.getString(R.string.pref_key_password), "")
+    fun getUserAuthHeader(): String{
+        val sharedPref = application.getSharedPreferences(
+            resources.getString(R.string.user_session),
+            Context.MODE_PRIVATE
+        )
+        if (sharedPref.contains(resources.getString(R.string.pref_key_login)) && sharedPref.getBoolean(
+                resources.getString(
+                    R.string.pref_key_login
+                ), false
+            )){
+            val username:String? = sharedPref.getString(
+                resources.getString(R.string.pref_key_username),
+                ""
+            )
+            val password: String? = sharedPref.getString(
+                resources.getString(R.string.pref_key_password),
+                ""
+            )
             val credentialsString = username + ":" + password
             return "Basic " + Base64.encodeToString(
                 credentialsString.toByteArray(),
