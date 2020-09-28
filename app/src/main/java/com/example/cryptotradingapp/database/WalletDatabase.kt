@@ -10,6 +10,7 @@ import com.example.cryptotradingapp.database.entities.WalletItemDB
 abstract class WalletDatabase : RoomDatabase(){
     abstract val walletDao: WalletDao
 
+
     companion object {
         @Volatile
         private var INSTANCE: WalletDatabase? = null

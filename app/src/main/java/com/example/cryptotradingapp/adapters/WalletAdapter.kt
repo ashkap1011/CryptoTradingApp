@@ -23,7 +23,10 @@ class WalletAdapter : RecyclerView.Adapter<WalletAdapter.WalletViewHolder>() {
         val symbol: TextView = itemView.currency_symbol
         val quantity: TextView = itemView.currency_quantity
     }
-    /*
+
+
+
+    /* TODO Making it more efficient, see codelabs
     private val differCallback = object : DiffUtil.ItemCallback<Cryptocurrency>() {
         override fun areItemsTheSame(oldItem: Cryptocurrency, newItem: Cryptocurrency): Boolean {
             return oldItem.id == newItem.id
@@ -45,16 +48,15 @@ class WalletAdapter : RecyclerView.Adapter<WalletAdapter.WalletViewHolder>() {
 
     override fun onBindViewHolder(holder: WalletViewHolder, position: Int) {
         val currency = data[position]
-        holder.itemView.apply{
-            currency_symbol.text = currency.symbol
-            currency_quantity.text = (currency.lockedQuantity + currency.quantity).toString()
+        holder.apply{
+            symbol.text = currency.symbol
+            quantity.text = (currency.lockedQuantity + currency.quantity).toString()
             //todo look at philip lackner around 9:00 for implementing clicking
         }
     }
 
-    override fun getItemCount(): Int {
-        return data.size
-    }
+    override fun getItemCount()= data.size
+
 
 
 }

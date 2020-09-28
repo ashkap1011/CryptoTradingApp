@@ -9,13 +9,11 @@ import androidx.room.PrimaryKey
 
 
 //CryptoCurrency in user's wallet
-
 data class Cryptocurrency(
     val id: String, //maybe don't need id
     val symbol: String,
     val quantity: Double,
     val lockedQuantity:Double
-
 )
 
 //Executed Trade, i.e. trades from order history
@@ -37,13 +35,13 @@ data class OpenTrade (
 )
 
 
+data class MarketOrder(val isBuy:Boolean, val symbol: String, val quantity: Double)
+
+data class LimitOrder(val isBuy:Boolean, val symbol: String, val quantity:Double, val executionPrice: Double)
 
 
 
 
-data class DevByteVideo(val title: String,
-                        val description: String,
-                        val url: String,
-                        val updated: String,
-                        val thumbnail: String)
+
+
 

@@ -7,6 +7,24 @@ import com.example.cryptotradingapp.database.entities.WalletItemDB
  * Contains objects used converting network objects
  * */
 
+
+data class ResponseMessage(
+    val isSuccessful: Boolean,
+    val message: String,
+)
+
+
+data class MarketCoin(
+    val symbol: String,
+    val price: Double
+)
+
+class MarketData: ArrayList<MarketCoin>()
+
+
+
+
+
 //TODO use GSON
 data class WalletItemNetwork(
     val _id: String,
@@ -17,10 +35,6 @@ data class WalletItemNetwork(
 
 class NetworkWallet : ArrayList<WalletItemNetwork>()
 
-data class ResponseMessage(
-    val isSuccessful: Boolean,
-    val message: String,
-)
 
 /*
 * Converts network objects to database objects

@@ -1,20 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <FrameLayout
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.cryptotradingapp.viewmodels.TradingViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.TradingFragment">
+        tools:context=".fragments.MarketFragment">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <Spinner
+            android:id="@+id/trading_pair"
+            android:entries="@array/crytocurrencies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/order_type_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Trading" />
-        </RelativeLayout>
-    </FrameLayout>
+        <Switch
+            android:id="@+id/is_sell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Buy / Sell"
+            android:checked="@{viewModel.isSell}"
+            app:layout_constraintBottom_toTopOf="@+id/coin_price"
+            app:layout_constraintEnd_toStartOf="@+id/order_type_list"
+            app:layout_constraintHorizontal_bias="0.529"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trading_pair"
+            app:layout_constraintVertical_bias="0.429"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <Spinner
+            android:id="@+id/order_type_list"
+            android:entries="@array/order_types"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="72dp"
+            android:layout_marginBottom="68dp"
+            app:layout_constraintBottom_toTopOf="@+id/coin_price"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <EditText
+            android:id="@+id/coin_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:enabled="@{!viewModel.isMarketOrder}"
+            android:text="@{viewModel.coinPrice.toString()}"
+            app:layout_constraintBottom_toTopOf="@+id/coin_quantity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.104"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/coin_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="280dp"
+            android:ems="10"
+            android:text=""
+            android:inputType="numberDecimal"
+            android:hint="Quantity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.079"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/order_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:ems="10"
+            android:text="@{viewModel.orderValue.toString()}"
+            app:layout_constraintEnd_toStartOf="@+id/execute_btn"
+            app:layout_constraintHorizontal_bias="0.396"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coin_quantity" />
+
+        <Button
+            android:id="@+id/execute_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="152dp"
+            android:layout_marginEnd="36dp"
+            android:text="Execute"
+            android:onClick="@{()->viewModel.executeOrder()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.789"
+            app:layout_constraintStart_toEndOf="@+id/user_balance"
+            app:layout_constraintTop_toBottomOf="@+id/order_type_list"
+            app:layout_constraintVertical_bias="0.288" />
+
+        <TextView
+            android:id="@+id/user_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:ems="10"
+            android:text="@{viewModel.userCoinBalance.toString()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/order_value"
+            app:layout_constraintVertical_bias="0.0" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

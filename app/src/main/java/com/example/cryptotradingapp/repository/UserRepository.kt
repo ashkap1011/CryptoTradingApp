@@ -11,6 +11,7 @@ import com.example.cryptotradingapp.database.ExecutedTradesDatabase.Companion.ge
 import com.example.cryptotradingapp.database.OpenTradesDatabase.Companion.getInstanceOpenTradesDB
 import com.example.cryptotradingapp.database.WalletDatabase.Companion.getInstanceWalletDB
 import com.example.cryptotradingapp.database.entities.asDomainModel
+import com.example.cryptotradingapp.database.entities.asDomainModels
 import com.example.cryptotradingapp.domain.Cryptocurrency
 import com.example.cryptotradingapp.fragments.AccountFragment
 import com.example.cryptotradingapp.fragments.LoginFragment
@@ -20,6 +21,7 @@ import com.example.cryptotradingapp.network.UserService
 import com.example.cryptotradingapp.network.asDatabaseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
 
 
 /**
@@ -29,13 +31,21 @@ import kotlinx.coroutines.withContext
 class UserRepository(app: Application) {    //TODO use depenedcy injection
 
     private val userService = RetrofitInstance.getRetrofitInstance().create(UserService::class.java)
-    private val walletDao = getInstanceWalletDB(app).walletDao
+    private  val walletDao = getInstanceWalletDB(app).walletDao
     private val executedTradesDao = getInstanceExecTradesDB(app).executedTradesDao
     private val openTradesDao = getInstanceOpenTradesDB(app).openTradesDao
 
-
     val wallet: LiveData<List<Cryptocurrency>> = Transformations.map(walletDao.getAllWalletItems()) {
-        it.asDomainModel()
+        it.asDomainModels()
+    }
+
+//todo asdomainmodel seems a bit redundant
+    suspend fun getUserCoinBalance(symbol: String): Double{
+        val walletItem = walletDao.getCurrency(symbol)
+        if (walletItem != null){
+        return walletItem.asDomainModel().quantity
+        }
+        return 0.0
     }
 
     private val application = app
@@ -90,9 +100,6 @@ class UserRepository(app: Application) {    //TODO use depenedcy injection
 
         }
 
-
-
-
     /*
     suspend fun refreshVideos() {
         withContext(Dispatchers.IO) {
@@ -115,7 +122,6 @@ class UserRepository(app: Application) {    //TODO use depenedcy injection
            Log.i("Wallet", "Luck, wallet retrieved")
            walletDao.insertAllWalletItem(wallet.asDatabaseModel())
            Log.i("Wallet", "Luck, databasemodel retrieved")
-
        }
    }
 

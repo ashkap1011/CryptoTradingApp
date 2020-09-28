@@ -1,6 +1,8 @@
 package com.example.cryptotradingapp.network
 
-import com.example.cryptotradingapp.viewmodels.limitOrder
+import android.util.Log
+import com.example.cryptotradingapp.domain.LimitOrder
+import com.example.cryptotradingapp.domain.MarketOrder
 import retrofit2.http.*
 
 /**
@@ -9,31 +11,23 @@ import retrofit2.http.*
 
 interface ExchangeService {
 
-    //make connection to market data
-
     //maybe stop connection to market data
 
     //fetch price for crypto
-
 
     @GET("/user/coin_price/{symbol}")
     suspend fun getCoinPrice(@Path("symbol") symbol:String): ResponseMessage
 
     @POST("/user/order/new/market")
-    suspend fun placeMarketOrder(@Header("Authorization") authHeader:String): ResponseMessage
+    suspend fun placeMarketOrder(@Header("Authorization") authHeader:String, @Body order: MarketOrder): ResponseMessage
 
     @POST("/user/order/new/limit")
-    suspend fun placeLimitOrder(@Header("Authorization") authHeader:String): ResponseMessage
-
-    @POST("/user/test")
-    suspend fun placeTestOrder(@Header("Authorization") authHeader:String, @Body limitOrder: limitOrder): ResponseMessage
-
-
-
-
+    suspend fun placeLimitOrder(@Header("Authorization") authHeader:String, @Body order: LimitOrder): ResponseMessage
 
 
 }
+
+
 
 
 

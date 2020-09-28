@@ -50,6 +50,8 @@ class AccountFragment : Fragment() {
         }
     }
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,8 +64,6 @@ class AccountFragment : Fragment() {
         )
 
         viewModel = ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory(activity!!.application)).get(AccountViewModel::class.java)
-
-
 
         binding.viewModel = viewModel
 

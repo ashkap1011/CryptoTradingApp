@@ -15,105 +15,20 @@
         android:layout_height="match_parent"
         tools:context=".fragments.MarketFragment">
 
-        <Switch
-            android:id="@+id/is_buy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Switch"
-            app:layout_constraintBottom_toTopOf="@+id/coin_value"
-            app:layout_constraintEnd_toStartOf="@+id/order_type_list"
-            app:layout_constraintHorizontal_bias="0.529"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner"
-            app:layout_constraintVertical_bias="0.429" />
 
-        <Spinner
-            android:id="@+id/order_type_list"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="72dp"
-            android:layout_marginBottom="68dp"
-            app:layout_constraintBottom_toTopOf="@+id/coin_value"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <EditText
-            android:id="@+id/coin_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-          android:text="hi"
-          app:layout_constraintBottom_toTopOf="@+id/coin_quantity"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0.104"
-          app:layout_constraintStart_toStartOf="parent" />
-
-        <!--@{viewmodel.coinValue}
-                  android:afterTextChanged="@{(edtitable)->viewModel.setCoinValue(edtitable)}" -->
-      <EditText
-          android:id="@+id/coin_quantity"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="280dp"
-          android:ems="10"
-          android:inputType="textPersonName"
-          android:text="Quantity"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0.079"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
-
-      <EditText
-          android:id="@+id/order_value"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="24dp"
-          android:ems="10"
-          android:inputType="textPersonName"
-          android:text="Order Value in BTC"
-          app:layout_constraintEnd_toStartOf="@+id/execute_btn"
-          app:layout_constraintHorizontal_bias="0.396"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/coin_quantity" />
-
-      <Button
-          android:id="@+id/execute_btn"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="152dp"
-          android:layout_marginEnd="36dp"
-          android:text="Execute"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0.789"
-          app:layout_constraintStart_toEndOf="@+id/user_balance"
-          app:layout_constraintTop_toBottomOf="@+id/order_type_list"
-          app:layout_constraintVertical_bias="0.288" />
-
-      <EditText
-          android:id="@+id/user_balance"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="40dp"
-          android:ems="10"
-          android:inputType="textPersonName"
-          android:text="Balance"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/order_value"
-          app:layout_constraintVertical_bias="0.0" />
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="409dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/order_type_list"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/market_coins_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp"
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:listitem="@layout/market_coin_item"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

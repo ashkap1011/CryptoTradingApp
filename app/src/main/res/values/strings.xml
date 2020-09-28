@@ -9,4 +9,22 @@
     <string name="pref_key_username">username</string>
     <string name="pref_key_password">password</string>
 
+    <string name="BTC">BTC</string>
+
+    <string-array name="crytocurrencies">
+        <item>XVG/USDT</item>
+        <item>ETH/BTC</item>
+        <item>XRP/BTC</item>
+        <item>BNB/BTC</item>
+        <item>LTC/BTC</item>
+        <item>TRX/BTC</item>
+    </string-array>
+
+    <string-array name="order_types">
+        <item>Market</item>
+        <item>Limit</item>
+    </string-array>
+
+
+
 </resources>

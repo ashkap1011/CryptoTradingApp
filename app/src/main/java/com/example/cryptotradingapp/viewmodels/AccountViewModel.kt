@@ -12,8 +12,6 @@ class AccountViewModel(app: Application) : AndroidViewModel(app) {
     private val userRepository: UserRepository = UserRepository(app)
     val wallet = userRepository.wallet
 
-
-
     init {
         refreshDataFromRepository()
     }
