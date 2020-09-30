@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -32,7 +33,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [MarketFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MarketFragment : Fragment() {
+class MarketFragment : Fragment(),MarketCoinAdapter.OnItemClickListener {
 
     private lateinit var binding: FragmentMarketBinding
     private lateinit var viewModel: MarketViewModel
@@ -61,18 +62,16 @@ class MarketFragment : Fragment() {
             inflater, R.layout.fragment_market, container, false
         )
 
-        viewModel = ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory(activity!!.application)).get(
-            MarketViewModel::class.java)
-
-
         binding.lifecycleOwner = this
+
+        viewModel = ViewModelProvider(requireActivity(),ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(
+            MarketViewModel::class.java)
 
         binding.viewModel = viewModel
 
         viewModel.startConnection()
 
-
-        val adapter = MarketCoinAdapter()
+        val adapter = MarketCoinAdapter(this)
         binding.marketCoinsList.adapter = adapter
 
 
@@ -83,11 +82,21 @@ class MarketFragment : Fragment() {
             Log.i("PRINTINGEDINVIEWMODEL", it.toString())
         })
 
-
-
-
-
         return binding.root
+    }
+
+
+    override fun onItemClick(position: Int) {
+        Toast.makeText(context, "Item $position", Toast.LENGTH_SHORT).show()
+        Log.i("MARKETTRADING", "POSITION-----------------------" + position)
+        viewModel.selectedTradingPair(position)
+        activity!!.supportFragmentManager.beginTransaction().apply{
+            replace(R.id.fl_wrapper, MarketChartFragment())
+            addToBackStack(null)
+            commit()
+        }
+        //todo get item symbol, pass it to webview
+
     }
 
     companion object {

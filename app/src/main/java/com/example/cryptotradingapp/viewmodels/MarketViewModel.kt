@@ -21,7 +21,7 @@ import org.json.JSONObject
 class MarketViewModel(app:Application): AndroidViewModel(app) {
     private var exchangeRepository: ExchangeRepository = ExchangeRepository(app)
     lateinit var marketDataFeed:LiveData<List<MarketCoin>>
-
+    lateinit var selectedTradingPair: String
 
     fun startConnection(){
         Log.i("marketData", "starting connection from viewmodel")
@@ -31,7 +31,10 @@ class MarketViewModel(app:Application): AndroidViewModel(app) {
 
     //connection starts in main activity
 
-
+    fun selectedTradingPair(position:Int){
+       // val marketSnapShot = marketDataFeed.value!!
+        selectedTradingPair = marketDataFeed.value!!.elementAt(position).symbol.replace("/","")
+    }
 
 
 
