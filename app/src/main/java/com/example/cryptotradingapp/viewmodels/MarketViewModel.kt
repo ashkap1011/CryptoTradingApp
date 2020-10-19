@@ -27,9 +27,7 @@ class MarketViewModel(app:Application): AndroidViewModel(app) {
     var openTrades: LiveData<List<OpenTrade>> = exchangeRepository.getCachedOpenTrades()
 
     fun startConnection(){
-        Log.i("marketData", "starting connection from viewmodel")
         marketDataFeed = exchangeRepository.startConnection()
-        Log.i("marketData", "PRINTINGMARKETDATAFEEDINVIEWMODEL" + marketDataFeed.value.toString())
     }
 
     //connection starts in main activity

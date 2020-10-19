@@ -25,22 +25,15 @@ class LoginViewModel(app: Application) : AndroidViewModel(app) {
     lateinit var password : String
     var isSignIn =false //holds value of isSignin OR is Login Switch
     private lateinit var saveButton : Button
-    //todo instantiate the userrepo
     private val userRepository: UserRepository = UserRepository(app)
-
-    private val userService = RetrofitInstance.getRetrofitInstance().create(UserService::class.java)
-    private val resources = getApplication<Application>().resources
-
 
     fun postCredentials(): Boolean = runBlocking{
             var isSuccessful = false
-            //TODO MAKE SURE USERNAME AND PASSWORD MEETS INPUT REQUIREMENTS
+            //TODO make sure password and username meets user requirements
             val job = viewModelScope.async(Dispatchers.IO) {
                 isSuccessful = getPostCredentialsResponse()
-                Log.i("LOGIN", "IO coroutine finished")
             }
         job.join()
-        Log.i("LOGIN", "RETURNING GOOD BOOLEAN in postCredentials()")
         return@runBlocking isSuccessful
     }
 
@@ -67,9 +60,7 @@ class LoginViewModel(app: Application) : AndroidViewModel(app) {
                 isSuccessful = true
                 userRepository.updateUserSession(username,password) //updates system to add user as logged in
                 userRepository.retrieveUserData()                   //retrieves user data (from userService) after login
-                Log.i("LOGIN", "RETURNING GOOD BOOLEAN")
             } else{
-                Log.i("login", "unsuccessful")
             }
             return isSuccessful
 
@@ -77,17 +68,14 @@ class LoginViewModel(app: Application) : AndroidViewModel(app) {
         catch (e: Exception){
             Log.i("err", e.message)
         }
-       Log.i("LOGIN", "RETURNING BAD BOOLEAN")
        return isSuccessful
     }
 
     fun afterUsernameChange(s: CharSequence) {
-        //Log.i("truc", s.toString());
         this.username = s.toString()
     }
 
     fun afterPasswordChange(s: CharSequence) {
-        //Log.i("truc", s.toString());
         this.password = s.toString()
     }
 

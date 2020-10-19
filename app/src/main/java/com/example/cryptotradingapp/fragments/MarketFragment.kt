@@ -28,11 +28,6 @@ class MarketFragment : Fragment(),MarketCoinAdapter.OnItemClickListener {
     private lateinit var binding: FragmentMarketBinding
     private lateinit var viewModel: MarketViewModel
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

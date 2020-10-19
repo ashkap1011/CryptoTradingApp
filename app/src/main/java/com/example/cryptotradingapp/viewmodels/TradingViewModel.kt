@@ -64,7 +64,6 @@ class TradingViewModel(app: Application): AndroidViewModel(app) {
 
 
     init{
-        //_coinValue.value ="heyyy"
         //setCoinPriceEditabale()
         setCurrentCoinPrice()
         if(isUserLoggedIn){
@@ -159,21 +158,17 @@ class TradingViewModel(app: Application): AndroidViewModel(app) {
 
     fun getSymbol(tradingPair:String): String{
         val c = tradingPair.split("/")[0]
-        Log.i("tradingexecution", "symbol: " + c)
         return c
     }
 
     fun executeOrder(){
         if (checkValidEntries()&& checkEnoughFunds()){
-            Log.i("orderplace", "placing order")
             validOrderForExecution()
 
         } else{
             //not valid fields
         }
 
-
-        Log.i("tradingvi", "Executing ORDER")
         val price = coinPrice.value
         val isMarketOrder = _isMarketOrder.value
         val isSell = _isSell.value
