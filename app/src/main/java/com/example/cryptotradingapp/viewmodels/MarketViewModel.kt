@@ -3,6 +3,7 @@ package com.example.cryptotradingapp.viewmodels
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.cryptotradingapp.domain.OpenTrade
 import com.example.cryptotradingapp.network.ExchangeService
 import com.example.cryptotradingapp.network.MarketCoin
 import com.example.cryptotradingapp.network.RetrofitInstance
@@ -20,8 +21,10 @@ import org.json.JSONObject
 
 class MarketViewModel(app:Application): AndroidViewModel(app) {
     private var exchangeRepository: ExchangeRepository = ExchangeRepository(app)
+    private var userRepository: UserRepository = UserRepository(app)
     lateinit var marketDataFeed:LiveData<List<MarketCoin>>
     lateinit var selectedTradingPair: String
+    var openTrades: LiveData<List<OpenTrade>> = exchangeRepository.getCachedOpenTrades()
 
     fun startConnection(){
         Log.i("marketData", "starting connection from viewmodel")
@@ -36,6 +39,13 @@ class MarketViewModel(app:Application): AndroidViewModel(app) {
         selectedTradingPair = marketDataFeed.value!!.elementAt(position).symbol.replace("/","")
     }
 
+    fun retrieveOpenOrders(){
+        viewModelScope.async {
+            exchangeRepository.fetchOpenTrades(userRepository.getUserAuthHeader())
+            openTrades = exchangeRepository.openTrades!!
+        }
+
+    }
 
 
 

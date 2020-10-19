@@ -33,7 +33,6 @@ class UserRepository(app: Application) {    //TODO use depenedcy injection
     private val userService = RetrofitInstance.getRetrofitInstance().create(UserService::class.java)
     private  val walletDao = getInstanceWalletDB(app).walletDao
     private val executedTradesDao = getInstanceExecTradesDB(app).executedTradesDao
-    private val openTradesDao = getInstanceOpenTradesDB(app).openTradesDao
 
     val wallet: LiveData<List<Cryptocurrency>> = Transformations.map(walletDao.getAllWalletItems()) {
         it.asDomainModels()

@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.cryptotradingapp.database.entities.OpenTrade
+import com.example.cryptotradingapp.database.entities.OpenTradeDB
 
-@Database(entities = [OpenTrade::class], version = 1, exportSchema = false)
+@Database(entities = [OpenTradeDB::class], version = 2, exportSchema = false)
 abstract class OpenTradesDatabase :RoomDatabase(){
     abstract val openTradesDao: OpenTradesDao
 

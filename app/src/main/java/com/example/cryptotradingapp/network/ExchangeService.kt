@@ -18,6 +18,9 @@ interface ExchangeService {
     @GET("/user/coin_price/{symbol}")
     suspend fun getCoinPrice(@Path("symbol") symbol:String): ResponseMessage
 
+    @GET("/user/opentrades")
+    suspend fun getOpenTrades(@Header("Authorization") authHeader:String): OpenOrdersNetwork
+
     @POST("/user/order/new/market")
     suspend fun placeMarketOrder(@Header("Authorization") authHeader:String, @Body order: MarketOrder): ResponseMessage
 

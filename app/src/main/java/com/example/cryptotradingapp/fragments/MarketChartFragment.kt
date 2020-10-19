@@ -53,7 +53,7 @@ class MarketChartFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_market_chart, container, false
         )
-        
+
         binding.lifecycleOwner = this
 
         viewModel = ViewModelProvider(requireActivity(),

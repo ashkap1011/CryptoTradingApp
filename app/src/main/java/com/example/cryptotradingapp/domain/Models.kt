@@ -27,11 +27,11 @@ data class ExecutedTrade(
 
 //OpenTrade i.e. current trades
 data class OpenTrade (
-    val id: Long,
+    val id: String,
     val symbol: String,
-    val quantity: Int,
+    val quantity: Double,
+    val orderType: Integer,
     val isBuy: Boolean,
-    val isLimit: Boolean
 )
 
 
